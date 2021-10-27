@@ -1,47 +1,37 @@
 import os
 
-
 def Read_Split_And_Write(input_dir, label, rgb_output, gradient_output):
     for file in os.listdir(input_dir):
         if file.endswith('.txt'):
             with open(os.path.join(input_dir, file), 'r') as input:
+                rgb_count, gradient_count = 1, 1
+
                 for line in input:
-                    input_num = 0
-                    for single_str in line.split(' '):
-                        if single_str != "\n":
-                            input_num += 1
+                    feature_count = 0
+
+                    for feature_value in line.split(' '):
+                        if feature_value != "\n":
+                            feature_count += 1
 
                     rgb_output.write(label + " ")
                     gradient_output.write(label + " ")
 
-                    for times in range(int(input_num / 5)):
-                        rgb_output.write(str(times*5+1))
-                        rgb_output.write(":")
-                        rgb_output.write(line.split(' ')[times*5])
-                        rgb_output.write(" ")
+                    for times in range(int(feature_count / 5)):
+                        rgb_output.write( str(rgb_count) + ":" + line.split( ' ' )[ times*5 ] + " " )
+                        rgb_count += 1
+                        rgb_output.write( str(rgb_count) + ":" + line.split( ' ' )[ times*5+1 ] + " " )
+                        rgb_count += 1
+                        rgb_output.write( str(rgb_count) + ":" + line.split( ' ' )[ times*5+2 ] + " " )
+                        rgb_count += 1
 
-                        rgb_output.write(str(times*5+2))
-                        rgb_output.write(":")
-                        rgb_output.write(line.split(' ')[times*5+1])
-                        rgb_output.write(" ")
+                        gradient_output.write( str(gradient_count) + ":" + line.split( ' ' )[ times*5+3 ] + " " )
+                        gradient_count += 1
+                        gradient_output.write( str(gradient_count) + ":" + line.split( ' ' )[ times*5+4 ] + " " )
+                        gradient_count += 1
 
-                        rgb_output.write(str(times*5+3))
-                        rgb_output.write(":")
-                        rgb_output.write(line.split(' ')[times*5+2])
-                        rgb_output.write(" ")
-
-                        gradient_output.write(str(times*5+4))
-                        gradient_output.write(":")
-                        gradient_output.write(line.split(' ')[times*5+3])
-                        gradient_output.write(" ")
-
-                        gradient_output.write(str(times*5+5))
-                        gradient_output.write(":")
-                        gradient_output.write(line.split(' ')[times*5+2])
-                        gradient_output.write(" ")
-
-                    rgb_output.write("\n")
-                    gradient_output.write("\n")
+            rgb_count, gradient_count = 1, 1
+            rgb_output.write("\n")
+            gradient_output.write("\n")
 
 
 if __name__ == '__main__':
